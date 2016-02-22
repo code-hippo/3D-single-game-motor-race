@@ -3,12 +3,6 @@
 
 Simple single Player game in C++, OpenGL.
 
-Developed from scratch using C++, OpenGL on eclipse as multiplatform game.
-A dedicated physics engine was programmed with collision detection techiniques.
-GLM library for importing the bike made in Blender software.
-A database for High Scores & other features is maintained.
-
-
 ## Synopsis
 
 A dedicated physics engine was programmed with collision detection techniques.
