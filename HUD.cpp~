@@ -1,0 +1,125 @@
+/*
+ * HUD.cpp
+ *
+ *  Created on: Aug 17, 2013
+ *      Author: bhargavvar
+ */
+
+
+
+
+/*
+ * HUD.cpp
+ *
+ *  Created on: Aug 11, 2013
+ *      Author: bhargavvar
+ */
+
+
+#include <GL/glut.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <math.h>
+#include "HUD.h"
+
+
+
+
+
+void displayvariables::screendisplay()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		     // Clear Screen and Depth Buffer
+	glLoadIdentity();															// reset projection matrix
+	GLfloat aspect = (GLfloat) win.winwidth / win.winheight;
+	gluPerspective(win.viewangle_field, aspect, win.near_z, win.far_z);		// set up a perspective projection matrix
+
+
+//	gluLookAt( 10,3,0, 0,0,0, 0,1,0);					  // Define a viewing transformation
+	GLfloat amb_light[] = { 0.2, 0.2, 0.2, 1.0 };
+	GLfloat diffuse[] = { 0.6, 0.6, 0.3, 1 };
+	GLfloat specular[] = { 0.7, 0.5, 0.3, 1 };
+	    glLightModelfv( GL_LIGHT_MODEL_AMBIENT, amb_light );
+	    glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuse );
+	    glLightfv( GL_LIGHT0, GL_SPECULAR, specular );
+	    glEnable(GL_LIGHTING);
+	    glEnable( GL_LIGHT0 );
+	    glShadeModel( GL_SMOOTH );
+	    glLightModeli( GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE );
+	    glClearColor(.35, .27, .31, 1.0);
+
+
+	glutSwapBuffers();
+}
+
+displayvariables::displayvariables()
+{
+   Keystates= new bool[256];
+
+}
+
+
+
+
+
+void displayvariables::initializerendering ()
+{
+    glMatrixMode(GL_PROJECTION);												// select projection matrix
+    glViewport(0, 0, win.winwidth, win.winheight);									// set the viewport
+    glMatrixMode(GL_PROJECTION);												// set matrix mode
+
+
+    glMatrixMode(GL_MODELVIEW);													// specify which matrix is the current matrix
+    glShadeModel( GL_SMOOTH );
+    glClearDepth( 1.0f );														// specify the clear value for the depth buffer
+    glEnable( GL_DEPTH_TEST );
+    glDepthFunc( GL_LEQUAL );
+    glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );						// specify implementation-specific hint
+    glEnable( GL_COLOR_MATERIAL );
+
+
+
+}
+
+
+
+void displayvariables::keyoperations()
+{
+
+	if(Keystates['w']){
+
+		Bike.accelerate.z=(0.1f*cos(270+Bike.bikeangle),0,0.1f*(sin(270+Bike.bikeangle)));
+	}
+	if(Keystates['a']){
+		Bike.accelerate.x=(0.03f*cos(270+Bike.bikeangle),0,0.03f*(sin(270+Bike.bikeangle)));
+	}
+	if(Keystates['d']){
+	    Bike.accelerate.x=(-0.1f*cos(270+Bike.bikeangle),0,-0.1f*(sin(270+Bike.bikeangle)));
+    }
+	if(Keystates['s']){
+
+		Bike.accelerate.z=(-0.03f*cos(270+Bike.bikeangle),0,-0.03f*(sin(270+Bike.bikeangle)));
+	}
+	if (Keystates[' ']){
+
+		if (magnitude(Bike.velocity)=0){
+			return;
+		}
+		else{
+		Bike.accelerate.z=(-0.14f*cos(270+Bike.bikeangle),0,-0.4f*(sin(270+Bike.bikeangle)));
+	}
+
+
+}
+}
+
+void displayvariables::keypressed(unsigned char a,int x, int y)
+{
+	Keystates[ a ] =true;
+
+
+}
+void displayvariables::keyup(unsigned char a,int x,int y)
+{
+    Keystates[ a] =false;
+}
+
